@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import MobileMenu from "@/components/layout/MobileMenu";
 import Footer from "@/components/layout/Footer";
@@ -11,15 +11,25 @@ import Contact from "@/components/sections/Contact";
 import { scrollToSection as utilsScrollToSection } from "@/lib/utils";
 
 const Home = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   // Create a single scrollToSection function for both Navbar and MobileMenu
   const scrollToSection = useCallback((sectionId: string) => {
     utilsScrollToSection(sectionId);
+    setIsMobileMenuOpen(false); // Close mobile menu after navigation
+  }, []);
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(prev => !prev);
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar scrollToSection={scrollToSection} />
-      <MobileMenu scrollToSection={scrollToSection} />
+      <MobileMenu 
+        isOpen={isMobileMenuOpen} 
+        onClose={toggleMobileMenu}
+      />
       <main className="flex-grow">
         <Hero />
         <About />

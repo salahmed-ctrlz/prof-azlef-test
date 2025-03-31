@@ -4,11 +4,11 @@ import { navLinks } from '@/lib/data';
 import { Menu, X, Download, Home, User, GraduationCap, Camera, Video, Mail, Linkedin, Instagram, Youtube, Phone } from 'lucide-react';
 
 interface MobileMenuProps {
-  scrollToSection: (sectionId: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
   const [scrolled, setScrolled] = useState(false);
   
   // Updated navLinks to include media section if not already present
@@ -22,13 +22,11 @@ const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
     };
     
     window.addEventListener('scroll', handleScroll);
-    // Initial call to set scrolled state correctly on mount
     handleScroll();
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Lock body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -41,17 +39,12 @@ const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
     };
   }, [isOpen]);
   
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-  
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-  
   const handleNavigation = (sectionId: string) => {
-    scrollToSection(sectionId);
-    closeMenu();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      onClose();
+    }
   };
   
   const menuVariants = {
@@ -98,16 +91,14 @@ const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
       {/* Hamburger Button - Fixed position aligned with navbar */}
       <div className="md:hidden">
         <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
           className={`fixed z-50 flex items-center justify-center w-10 h-10 rounded-full 
             bg-brown text-gold transition-all duration-300 ${scrolled ? 'top-2.5 right-4' : 'top-5 right-4'}`}
-          onClick={toggleMenu}
+          onClick={onClose}
           aria-label="Toggle menu"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Menu size={20} />
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
         </motion.button>
       </div>
       
@@ -119,7 +110,7 @@ const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-brown-dark/60 backdrop-blur-sm z-40 md:hidden"
-            onClick={closeMenu}
+            onClick={onClose}
           />
         )}
       </AnimatePresence>
@@ -140,7 +131,7 @@ const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
               <button
                 className="text-gold hover:text-gold-light w-10 h-10 flex items-center justify-center
                   rounded-full hover:bg-brown-light/20 transition-all"
-                onClick={closeMenu}
+                onClick={() => onClose()}
                 aria-label="Close menu"
               >
                 <X size={20} />
@@ -185,23 +176,17 @@ const MobileMenu = ({ scrollToSection }: MobileMenuProps) => {
                 <p className="text-beige-light text-sm mb-4 font-medium">Download my CV</p>
                 <a
                   href="/assets/Azlef-Iskander-Resume.pdf"
-                  className="bg-gold/90 hover:bg-gold text-brown font-semibold px-6 py-3 rounded-full 
+                  className="bg-gold/10 hover:bg-gold text-brown font-semibold px-6 py-3 rounded-full 
                     transition-all hover:shadow-md hover:shadow-gold/20 inline-flex items-center w-full justify-center"
                   download="Azlef-Iskander-Resume.pdf"
                   onClick={(e) => {
-                    // For local development, you might need to handle this differently
-                    // This ensures the file is downloaded from the correct path
-                    try {
-                      const link = document.createElement('a');
-                      link.href = '/src/assets/Azlef-Iskander-Resume.pdf';
-                      link.download = 'Azlef-Iskander-Resume.pdf';
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                      e.preventDefault();
-                    } catch (error) {
-                      console.error('Download failed:', error);
-                    }
+                    e.preventDefault();
+                    const link = document.createElement('a');
+                    link.href = '/assets/Azlef-Iskander-Resume.pdf';
+                    link.download = 'Azlef-Iskander-Resume.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
                   }}
                 >
                   <Download size={18} className="mr-2" />

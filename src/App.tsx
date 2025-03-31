@@ -1,7 +1,7 @@
 import { Switch, Route } from "wouter";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 // Import the CSS file
 import "./index.css";
 import ScrollProgress from './components/ScrollProgress';
@@ -51,8 +51,7 @@ const useHashLocation = () => {
 function App() {
   // Call hooks at the top level, in the same order on every render
   const [isLoading, setIsLoading] = useState(true);
-  const hashLocation = useHashLocation();
-  const [location, navigate] = hashLocation;
+  const [location] = useHashLocation();
 
   useEffect(() => {
     // Simulate minimum loading time to ensure fonts are loaded
@@ -73,7 +72,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Switch location={location} makeUrl={navigate}>
+      <Switch location={location}>
         <Route path="/" component={Home} />
         <Route component={NotFound} />
       </Switch>

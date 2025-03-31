@@ -81,8 +81,8 @@ const socialLinks = [
 ];
 
 const Contact = () => {
-  const sectionRef = useRef(null);
-  const bgAnimationRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const bgAnimationRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const { toast } = useToast();
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -101,14 +101,14 @@ const Contact = () => {
 
   // Handle parallax effect for background elements
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!bgAnimationRef.current) return;
       
-      const elements = bgAnimationRef.current.querySelectorAll('.bg-element');
+      const elements = bgAnimationRef.current.querySelectorAll('.bg-element') as NodeListOf<HTMLElement>;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       
-      elements.forEach((el, i) => {
+      elements.forEach((el: HTMLElement, i: number) => {
         const depth = 1 + (i % 3) * 0.5;
         const moveX = (clientX - innerWidth / 2) / (50 / depth);
         const moveY = (clientY - innerHeight / 2) / (50 / depth);
@@ -160,7 +160,7 @@ const Contact = () => {
   };
 
   // Generate background elements
-  const generateBgElements = (count) => {
+  const generateBgElements = (count: number) => {
     return Array.from({ length: count }).map((_, index) => ({
       id: index,
       size: Math.random() * 40 + 20,
@@ -620,7 +620,7 @@ const Contact = () => {
       </div>
 
       {/* Custom CSS for the contact card */}
-      <style jsx>{`
+      <style>{`
         .card {
           background: rgba(69, 41, 32, 0.85);
           border-radius: 32px;

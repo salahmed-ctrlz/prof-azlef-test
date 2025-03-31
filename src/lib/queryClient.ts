@@ -27,7 +27,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // Simplified query function for client-side only
-      queryFn: async ({ queryKey }) => {
+      queryFn: async ({ queryKey }: { queryKey: unknown[] }) => {
         const res = await fetch(queryKey[0] as string);
         
         if (!res.ok) {

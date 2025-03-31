@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { fadeIn } from "@/lib/animations";
 import { navLinks } from "@/lib/data";
 
 interface NavbarProps {

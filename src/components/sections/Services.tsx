@@ -48,8 +48,8 @@ const servicesData = [
 ];
 
 const Services = () => {
-  const sectionRef = useRef(null);
-  const bgAnimationRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const bgAnimationRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
   
@@ -65,14 +65,14 @@ const Services = () => {
 
   // Handle parallax effect for background elements
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!bgAnimationRef.current) return;
       
-      const elements = bgAnimationRef.current.querySelectorAll('.bg-element');
+      const elements = bgAnimationRef.current.querySelectorAll('.bg-element') as NodeListOf<HTMLElement>;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       
-      elements.forEach((el, i) => {
+      elements.forEach((el: HTMLElement, i: number) => {
         const depth = 1 + (i % 3) * 0.5;
         const moveX = (clientX - innerWidth / 2) / (50 / depth);
         const moveY = (clientY - innerHeight / 2) / (50 / depth);
@@ -96,7 +96,7 @@ const Services = () => {
   };
 
   // Generate animated background elements
-  const generateBgElements = (count) => {
+  const generateBgElements = (count: number) => {
     return Array.from({ length: count }).map((_, index) => ({
       id: index,
       size: Math.random() * 60 + 40,
@@ -113,7 +113,7 @@ const Services = () => {
   // Card animation variants
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: (i) => ({
+    visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {

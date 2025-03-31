@@ -5,20 +5,20 @@
 /* Add any custom styles here */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --background: 28 24% 95%;
+    --foreground: 28 24% 20%;
     
     --muted: 35 40% 94%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 28 24% 40%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
+    --popover-foreground: 28 24% 20%;
     
     --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 28 24% 20%;
     
     --border: 30 9% 75%;
-    --input: 214.3 31.8% 91.4%;
+    --input: 28 24% 90%;
     
     --primary: 28 24% 20%;
     --primary-foreground: 36 55% 92%;
@@ -36,7 +36,25 @@
     
     --radius: 0.5rem;
   }
- 
+
+  body {
+    @apply bg-gradient-to-br from-[#362421] via-[#4E342E] to-[#65463D];
+    background-size: 200% 200%;
+    animation: gradientAnimation 15s ease infinite;
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
   .dark {
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
@@ -103,7 +121,7 @@
   }
   
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply antialiased bg-background text-foreground;
     font-family: 'Baloo 2', sans-serif;
   }
   

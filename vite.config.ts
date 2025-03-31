@@ -10,10 +10,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  assetsInclude: ['**/*.JPG', '**/*.jpg', '**/*.png', '**/*.svg', '**/*.gif'],
-  // Base path for GitHub Pages - replace with your repo name if needed
   base: '/prof-azlef-test/',
   build: {
     outDir: 'dist',
+  },
+  assetsInclude: ['**/*.JPG', '**/*.jpg', '**/*.png', '**/*.gif', '**/*.svg', '**/*.pdf'],
+  server: {
+    hmr: {
+      overlay: true
+    }
   }
 })

@@ -1,28 +1,30 @@
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import gallery1 from "@/assets/gallery-1.JPG";
-import gallery2 from "@/assets/gallery-2.JPG";
-import gallery3 from "@/assets/gallery-3.JPG";
-import gallery4 from "@/assets/gallery-4.JPG";
-import gallery5 from "@/assets/gallery-5.JPG";
-import gallery6 from "@/assets/gallery-6.JPG";
-import gallery7 from "@/assets/hero-image.JPG";
+
+// Import images directly with correct paths
+import gallery1 from "../../assets/gallery-1.JPG";
+import gallery2 from "../../assets/gallery-2.JPG";
+import gallery3 from "../../assets/gallery-3.JPG";
+import gallery4 from "../../assets/gallery-4.JPG";
+import gallery5 from "../../assets/gallery-5.JPG";
+import gallery6 from "../../assets/gallery-6.JPG";
+import heroImage from "../../assets/hero-image.JPG";
 
 // Graduation ceremony images
 const graduationImages = [
-  { src: gallery1},
-  { src: gallery2},
-  { src: gallery7},
-  { src: gallery4},
-  { src: gallery5},
-  { src: gallery6},
-  { src: gallery3}
+  { src: gallery1 },
+  { src: gallery2 },
+  { src: heroImage },
+  { src: gallery4 },
+  { src: gallery5 },
+  { src: gallery6 },
+  { src: gallery3 },
 ];
 
 const Moments = () => {
-  const sectionRef = useRef(null);
-  const bgAnimationRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const bgAnimationRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const [activeIndex, setActiveIndex] = useState(0);
   const [items] = useState(graduationImages);
@@ -40,15 +42,15 @@ const Moments = () => {
 
   // Handle subtle background movement
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!bgAnimationRef.current) return;
       
-      const elements = bgAnimationRef.current.querySelectorAll('.bg-element');
+      const elements = Array.from(bgAnimationRef.current.querySelectorAll('.bg-element')) as HTMLElement[];
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       
-      elements.forEach((el, i) => {
-        const depth = 0.5 + (i % 3) * 0.2;
+      elements.forEach((el: HTMLElement, index: number) => {
+        const depth = 0.5 + (index % 3) * 0.2;
         const moveX = (clientX - innerWidth / 2) / (80 / depth);
         const moveY = (clientY - innerHeight / 2) / (80 / depth);
         
@@ -60,8 +62,8 @@ const Moments = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
   
-  // Function to get the class for each carousel item based on its position
-  const getPositionClass = (index) => {
+  // Function to get position class for carousel items
+  const getPositionClass = (index: number) => {
     const totalItems = items.length;
     const position = (index - activeIndex + totalItems) % totalItems;
     
@@ -100,7 +102,7 @@ const Moments = () => {
   }, [activeIndex]);
 
   // Generate subtle background elements
-  const generateBgElements = (count) => {
+  const generateBgElements = (count: number) => {
     return Array.from({ length: count }).map((_, index) => ({
       id: index,
       size: Math.random() * 40 + 20,
@@ -214,29 +216,16 @@ const Moments = () => {
                               positionClass === "far-next" || positionClass === "far-prev" ? "blur(2px)" : "blur(0)",
                     }}
                     onClick={() => positionClass !== "active" && setActiveIndex(index)}
-                    
                   >
                     <div className="relative w-full h-full overflow-hidden">
                       <img
                         src={image.src}
-                        alt={image.alt}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        alt=""
                       />
                       
                       {/* Gradient overlay for better text contrast */}
                       <div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 via-transparent to-transparent"></div>
-                      
-                      {/* Image caption at bottom */}
-                      {positionClass === "active" && (
-                        <motion.div 
-                          className="absolute bottom-0 left-0 right-0 p-4 text-white"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: 0.1 }}
-                        >
-                          <div className="font-balooBhaijaan text-lg text-gold">{image.alt}</div>
-                        </motion.div>
-                      )}
                     </div>
                   </motion.div>
                 );
@@ -265,7 +254,6 @@ const Moments = () => {
                 }`}
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
-                aria-label={`Go to slide ${index + 1}`}
               >
                 {index === activeIndex && (
                   <motion.span 
@@ -283,12 +271,12 @@ const Moments = () => {
           <div className="text-center mt-12">
             <a href="https://www.instagram.com/ensc_students/" target="_blank" rel="noopener noreferrer">
               <motion.button 
-                className="relative overflow-hidden bg-gold/90 hover:bg-gold text-brown px-8 py-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg group"
+                className="relative overflow-hidden bg-brown hover:bg-brown-dark text-gold px-8 py-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg group"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
                 {/* Button background glow effect */}
-                <span className="absolute inset-0 w-full h-full bg-white/20 flex items-center justify-center blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="absolute inset-0 w-full h-full bg-white/10 flex items-center justify-center blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
                 
                 {/* Button content */}
                 <span className="relative z-10 flex items-center gap-3 font-medium">

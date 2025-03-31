@@ -2,7 +2,7 @@ import { motion, useAnimation } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { letterByLetter, letter, wordReveal, word, staggerContainer, staggerItem } from "@/lib/animations";
 import heroImage from "../../assets/hero-image.png";
-import resume from '../../assets/Azlef-Iskander-Resume.pdf'; // Import the resume file
+import resume from '@/assets/Azlef-Iskander-Resume.pdf'; // Import the resume file
 
 const Hero = () => {
   const backgroundControls = useAnimation();

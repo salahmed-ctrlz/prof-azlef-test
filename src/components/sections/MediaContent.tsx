@@ -1,11 +1,10 @@
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 
 const MediaContent = () => {
-  const sectionRef = useRef(null);
-  const bgAnimationRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const bgAnimationRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -22,16 +21,16 @@ const MediaContent = () => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!bgAnimationRef.current) return;
       
-      const elements = bgAnimationRef.current.querySelectorAll('.bg-element');
+      const elements = bgAnimationRef.current.querySelectorAll('.bg-element') as NodeListOf<HTMLElement>;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       
-      elements.forEach((el, i) => {
+      elements.forEach((el: HTMLElement, i: number) => {
         const depth = 1 + (i % 3) * 0.5;
         const moveX = (clientX - innerWidth / 2) / (50 / depth);
         const moveY = (clientY - innerHeight / 2) / (50 / depth);
         
-        (el as HTMLElement).style.transform = `translate(${moveX}px, ${moveY}px)`;
+        el.style.transform = `translate(${moveX}px, ${moveY}px)`;
       });
     };
 
@@ -56,14 +55,6 @@ const MediaContent = () => {
   const particles = generateParticles(25);
 
   // Animation variants
-  const backgroundVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { duration: 1.5 }
-    }
-  };
-  
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: (i: number) => ({

@@ -56,7 +56,7 @@ const educationData = [
 
 const About = () => {
   const sectionRef = useRef(null);
-  const bgAnimationRef = useRef(null);
+  const bgAnimationRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
   const controls = useAnimation();
 
@@ -72,14 +72,14 @@ const About = () => {
 
   // Handle subtle background movement
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!bgAnimationRef.current) return;
       
-      const elements = bgAnimationRef.current.querySelectorAll('.bg-element');
+      const elements = bgAnimationRef.current.querySelectorAll('.bg-element') as NodeListOf<HTMLElement>;
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
       
-      elements.forEach((el, i) => {
+      elements.forEach((el: HTMLElement, i: number) => {
         const depth = 0.5 + (i % 3) * 0.2; // Reduced movement intensity
         const moveX = (clientX - innerWidth / 2) / (80 / depth);
         const moveY = (clientY - innerHeight / 2) / (80 / depth);
@@ -112,7 +112,7 @@ const About = () => {
   };
 
   // Generate subtle background elements
-  const generateBgElements = (count) => {
+  const generateBgElements = (count: number) => {
     return Array.from({ length: count }).map((_, index) => ({
       id: index,
       size: Math.random() * 40 + 20, // Smaller elements
