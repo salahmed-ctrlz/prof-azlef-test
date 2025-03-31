@@ -27,14 +27,13 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       // Simplified query function for client-side only
-      queryFn: async ({ queryKey }: { queryKey: unknown[] }) => {
-        const res = await fetch(queryKey[0] as string);
-        
-        if (!res.ok) {
-          throw new Error(`Error fetching data: ${res.status}`);
+      queryFn: async (context: { queryKey: readonly unknown[] }) => {
+        const [key] = context.queryKey;
+        const response = await fetch(key as string);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
-        
-        return await res.json();
+        return response.json();
       },
       refetchInterval: false,
       refetchOnWindowFocus: false,
