@@ -1,4 +1,4 @@
-import{r as e,j as a}from"./vendor-CHZwnf3A.js";import{a as s,c as r}from"./createLucideIcon-Bu3gys1S.js";
+import{r as e,j as a}from"./vendor-C_VgYD3D.js";import{a as s,c as r}from"./createLucideIcon-BDirKy-C.js";
 /**
  * @license lucide-react v0.344.0 - ISC
  *
