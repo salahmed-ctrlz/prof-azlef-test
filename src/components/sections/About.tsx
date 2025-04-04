@@ -9,7 +9,7 @@ const aboutData = [
     location: "CEM Berari Lakhmissi (El Bouni, Annaba)",
     description:
       "Implements differentiated pedagogy and interactive teaching methods to address each student's needs.",
-    period: "2020 - Present",
+    period: "2024 - Present",
   },
   {
     icon: "fas fa-chalkboard-teacher",
@@ -17,15 +17,15 @@ const aboutData = [
     location: "Larbi Moussa Middle School",
     description:
       "Gained valuable experience in lesson planning, classroom management, and interactive learning.",
-    period: "2018 - 2020",
+    period: "2023 - 2024",
   },
   {
     icon: "fas fa-laptop",
-    title: "Online English Teacher",
+    title: "Online & Private English Teacher",
     location: "ESL Ben Mhidi Private School",
     description:
       "Delivers tailored ESL courses that enhance language proficiency.",
-    period: "2019 - Present",
+    period: "2024 - Present",
   },
   {
     icon: "fas fa-podcast",
@@ -33,7 +33,7 @@ const aboutData = [
     location: "Instagram @prof.azlef",
     description:
       "Managing a 25,000+ Instagram community with educational podcasts.",
-    period: "2018 - Present",
+    period: "2020 - Present",
   },
 ];
 

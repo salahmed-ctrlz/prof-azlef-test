@@ -1,25 +1,25 @@
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 
 // Import images directly with correct paths
-import gallery1 from "../../assets/gallery-1.JPG";
-import gallery2 from "../../assets/gallery-2.JPG";
-import gallery3 from "../../assets/gallery-3.JPG";
-import gallery4 from "../../assets/gallery-4.JPG";
-import gallery5 from "../../assets/gallery-5.JPG";
-import gallery6 from "../../assets/gallery-6.JPG";
-import heroImage from "../../assets/hero-image.JPG";
+import gallery1 from "./Images/gallery-1.webp";
+import gallery2 from "./Images/gallery-2.webp";
+import gallery3 from "./Images/gallery-3.webp";
+import gallery4 from "./Images/gallery-4.webp";
+import gallery5 from "./Images/gallery-5.webp";
+import gallery6 from "./Images/gallery-6.webp";
+import gallery7 from "./Images/gallery-7.webp";
 
-// Graduation ceremony images
+// Graduation ceremony images with loading priority and sizes
 const graduationImages = [
-  { src: gallery1 },
-  { src: gallery2 },
-  { src: heroImage },
-  { src: gallery4 },
-  { src: gallery5 },
-  { src: gallery6 },
-  { src: gallery3 },
+  { src: gallery1, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
+  { src: gallery2, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
+  { src: gallery3, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
+  { src: gallery4, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
+  { src: gallery5, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
+  { src: gallery6, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
+  { src: gallery7, loading: "lazy", sizes: "(max-width: 768px) 100vw, 50vw" },
 ];
 
 const Moments = () => {
@@ -79,18 +79,18 @@ const Moments = () => {
   };
   
   // Navigate to previous slide
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setActiveIndex((prevIndex) => 
       prevIndex === 0 ? items.length - 1 : prevIndex - 1
     );
-  };
+  }, [items.length]);
   
   // Navigate to next slide
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setActiveIndex((prevIndex) => 
       (prevIndex + 1) % items.length
     );
-  };
+  }, [items.length]);
   
   // Auto-rotate carousel
   useEffect(() => {
@@ -186,46 +186,52 @@ const Moments = () => {
             <div className="relative h-full w-full flex items-center justify-center">
               {items.map((image, index) => {
                 const positionClass = getPositionClass(index);
+                const isActive = positionClass === "active";
                 
                 return (
                   <motion.div 
                     key={index} 
-                    className={`absolute transition-all duration-700 rounded-xl overflow-hidden shadow-lg cursor-pointer ${
-                      positionClass === "active" ? "z-30" : 
+                    className={`absolute transition-transform duration-500 rounded-xl overflow-hidden shadow-lg cursor-pointer ${
+                      isActive ? "z-30" : 
                       positionClass === "next" || positionClass === "prev" ? "z-20" : 
                       positionClass === "far-next" || positionClass === "far-prev" ? "z-10" : "hidden"
                     }`}
                     style={{
-                      width: positionClass === "active" ? "380px" : 
+                      width: isActive ? "380px" : 
                              positionClass === "next" || positionClass === "prev" ? "320px" : 
                              positionClass === "far-next" || positionClass === "far-prev" ? "260px" : "0",
-                      height: positionClass === "active" ? "480px" : 
+                      height: isActive ? "480px" : 
                               positionClass === "next" || positionClass === "prev" ? "400px" : 
                               positionClass === "far-next" || positionClass === "far-prev" ? "340px" : "0",
-                      left: positionClass === "active" ? "50%" : 
+                      left: isActive ? "50%" : 
                             positionClass === "next" ? "65%" : 
                             positionClass === "far-next" ? "80%" : 
                             positionClass === "prev" ? "35%" : 
                             positionClass === "far-prev" ? "20%" : "50%",
                       transform: "translateX(-50%)",
-                      opacity: positionClass === "active" ? 1 : 
+                      opacity: isActive ? 1 : 
                               positionClass === "next" || positionClass === "prev" ? 0.8 : 
                               positionClass === "far-next" || positionClass === "far-prev" ? 0.6 : 0,
-                      filter: positionClass === "active" ? "blur(0)" : 
+                      filter: isActive ? "none" : 
                               positionClass === "next" || positionClass === "prev" ? "blur(1px)" : 
-                              positionClass === "far-next" || positionClass === "far-prev" ? "blur(2px)" : "blur(0)",
+                              positionClass === "far-next" || positionClass === "far-prev" ? "blur(2px)" : "none",
+                      willChange: 'transform, opacity, filter',
+                      touchAction: 'pan-y pinch-zoom',
                     }}
-                    onClick={() => positionClass !== "active" && setActiveIndex(index)}
+                    onClick={() => !isActive && setActiveIndex(index)}
+                    whileTap={{ scale: isActive ? 0.98 : 1 }}
                   >
                     <div className="relative w-full h-full overflow-hidden">
                       <img
                         src={image.src}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover transform-gpu"
                         alt=""
+                        loading="lazy"
+                        decoding="async"
+                        draggable="false"
+                        style={{ willChange: 'transform' }}
                       />
-                      
-                      {/* Gradient overlay for better text contrast */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 via-transparent to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-brown-dark/70 via-transparent to-transparent pointer-events-none" />
                     </div>
                   </motion.div>
                 );
@@ -270,29 +276,25 @@ const Moments = () => {
           {/* View All Images Button */}
           <div className="text-center mt-12">
             <a href="https://www.instagram.com/ensc_students/" target="_blank" rel="noopener noreferrer">
-              <motion.button 
-                className="relative overflow-hidden bg-brown hover:bg-brown-dark text-gold px-8 py-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg group"
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                {/* Button background glow effect */}
-                <span className="absolute inset-0 w-full h-full bg-white/10 flex items-center justify-center blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                
-                {/* Button content */}
-                <span className="relative z-10 flex items-center gap-3 font-medium">
-                  <i className="fas fa-images text-lg"></i> 
-                  View All Moments
-                  <motion.i 
-                    className="fas fa-chevron-right text-xs" 
-                    initial={{ x: 0 }}
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                </span>
-              </motion.button>
+                <button 
+                  className="relative btn-pulse bg-gold hover:bg-gold-light text-brown font-semibold px-8 py-6 rounded-full transition-all hover:shadow-gold overflow-hidden group"
+                >
+                  <span className="absolute inset-0 w-full h-full bg-gold-light/30 flex items-center justify-center blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  <span className="relative z-10 flex items-center">
+                    <i className="fas fa-images mr-3 text-lg"></i> 
+                    View All Moments
+                    <i className="fas fa-chevron-right ml-3 text-sm"></i>
+                  </span>
+                </button>
+              </motion.div>
             </a>
             
-            <p className="text-beige-light mt-4 text-sm">Browse through my complete collection of educational journey</p>
+            <p className="text-beige-light mt-4 text-sm opacity-80">Browse through my complete collection of educational journey</p>
           </div>
         </motion.div>
       </div>

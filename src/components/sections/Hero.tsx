@@ -1,8 +1,9 @@
+import resume from '@/assets/Azlef-Iskander-Resume.pdf';
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { letterByLetter, letter, wordReveal, word, staggerContainer, staggerItem } from "@/lib/animations";
 import heroImage from "../../assets/hero-image.png";
-import resume from '@/assets/Azlef-Iskander-Resume.pdf'; // Import the resume file
+import { ArrowDown } from 'lucide-react';
 
 const Hero = () => {
   const backgroundControls = useAnimation();
@@ -133,6 +134,13 @@ const Hero = () => {
   };
 
   const particles = generateParticles(25);
+
+  const scrollToAbout = useCallback(() => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   return (
     <section

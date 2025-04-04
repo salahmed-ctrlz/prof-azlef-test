@@ -1,10 +1,12 @@
 import { Switch, Route } from "wouter";
-import Home from "@/pages/home";
-import NotFound from "@/pages/not-found";
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 // Import the CSS file
 import "./index.css";
 import ScrollProgress from './components/ScrollProgress';
+
+// Lazy load components
+const Home = lazy(() => import("@/pages/home"));
+const NotFound = lazy(() => import("@/pages/not-found"));
 
 // Enhanced hash location hook for GitHub Pages
 const useHashLocation = () => {
@@ -48,6 +50,16 @@ const useHashLocation = () => {
   return [location, navigate] as const;
 };
 
+// Loading component with optimized animation
+const LoadingSpinner = () => (
+  <div className="min-h-screen bg-brown flex items-center justify-center">
+    <div 
+      className="w-16 h-16 border-4 border-gold border-t-transparent rounded-full animate-spin transform-gpu"
+      style={{ willChange: 'transform' }}
+    />
+  </div>
+);
+
 function App() {
   // Call hooks at the top level, in the same order on every render
   const [isLoading, setIsLoading] = useState(true);
@@ -63,19 +75,17 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-brown flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-gold border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   return (
     <div className="app-container">
-      <Switch location={location}>
-        <Route path="/" component={Home} />
-        <Route component={NotFound} />
-      </Switch>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Switch location={location}>
+          <Route path="/" component={Home} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
       <ScrollProgress />
     </div>
   );

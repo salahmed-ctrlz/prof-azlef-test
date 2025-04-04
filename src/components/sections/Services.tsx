@@ -227,40 +227,29 @@ const Services = () => {
               variants={cardVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
-              whileHover="hover"
-              className="relative h-[340px] sm:h-[380px] rounded-xl overflow-hidden group"
+              className="relative w-full h-[420px] rounded-2xl bg-brown-light/20 p-7 border-2 border-gold/30 transition-all duration-500 ease-out overflow-visible hover:border-gold hover:shadow-xl hover:shadow-gold/20 group"
             >
-              {/* Card outer glow effect */}
-              <motion.div 
-                className="absolute inset-0 rounded-xl bg-gold/30"
-                variants={glowVariants}
-                initial="initial"
-                whileHover="hover"
-              />
-              
-              {/* Card inner content */}
-              <div className="absolute z-[1] rounded-xl inset-0.5 bg-brown-dark/95 flex flex-col p-7 backdrop-blur-sm transition-all duration-300 group-hover:bg-brown-dark/90">
-                {/* Decorative elements */}
-                <div className="absolute -right-4 -top-4 w-24 h-24 bg-gold/10 rounded-full blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
-                <div className="absolute -left-4 -bottom-4 w-20 h-20 bg-gold/10 rounded-full blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-300"></div>
-                
+              {/* Card Content Container */}
+              <div className="h-full flex flex-col">
                 {/* Icon */}
                 <motion.div 
-                  className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mb-5 mx-auto transform transition-all duration-300 group-hover:bg-gold/30 group-hover:scale-110 relative z-10"
+                  className="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mb-5 mx-auto transform transition-all duration-300 group-hover:bg-gold/30 group-hover:scale-110"
                 >
                   <i className={`${service.icon} text-gold text-2xl`}></i>
                 </motion.div>
                 
                 {/* Title & Description */}
-                <h3 className="font-balooBhaijaan text-xl text-center mb-3 text-gold">
-                  {service.title}
-                </h3>
-                <p className="text-center text-beige-light mb-5 text-sm">
-                  {service.description}
-                </p>
+                <div className="text-center mb-4">
+                  <h3 className="font-balooBhaijaan text-2xl mb-3 text-gold">
+                    {service.title}
+                  </h3>
+                  <p className="text-beige-light text-sm leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
                 
                 {/* Service Details */}
-                <div className="mt-auto">
+                <div className="flex-grow">
                   <h4 className="text-gold font-balooBhaijaan text-sm mb-3 text-center">Services Include:</h4>
                   <ul className="text-beige space-y-2">
                     {service.details.map((detail, idx) => (
@@ -273,19 +262,23 @@ const Services = () => {
                       </li>
                     ))}
                   </ul>
-                  
-                  {/* Call to action */}
-                  <div className="text-center mt-5">
-                    <motion.button 
-                      onClick={() => scrollToSection("contact")}
-                      className="text-sm text-gold hover:text-gold-light inline-flex items-center bg-gold/10 hover:bg-gold/20 px-4 py-1.5 rounded-full transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 400 }}
-                    >
-                      Learn more <i className="fas fa-arrow-right ml-1.5 text-xs"></i>
-                    </motion.button>
-                  </div>
                 </div>
+
+                {/* Learn More Button - Animated on Hover */}
+                <motion.button 
+                  onClick={() => scrollToSection("contact")}
+                  className="absolute left-1 bottom-0 -translate-x-1 w-3/5 bg-gold text-brown font-medium py-3 px-6 rounded-xl opacity-0 transition-all duration-300 ease-out hover:bg-gold-light group-hover:opacity-100 shadow-lg"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Learn more <i className="fas fa-arrow-right ml-1.5 text-xs"></i>
+                </motion.button>
+              </div>
+
+              {/* Decorative Background Elements */}
+              <div className="absolute inset-0 rounded-2xl transition-opacity duration-300 pointer-events-none">
+                <div className="absolute -right-4 -top-4 w-24 h-24 bg-gold/10 rounded-full blur-xl opacity-40 group-hover:opacity-60"></div>
+                <div className="absolute -left-4 -bottom-4 w-20 h-20 bg-gold/10 rounded-full blur-xl opacity-40 group-hover:opacity-60"></div>
               </div>
             </motion.div>
           ))}

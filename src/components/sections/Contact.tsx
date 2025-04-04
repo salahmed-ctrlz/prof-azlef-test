@@ -75,7 +75,7 @@ const socialLinks = [
     title: "Instagram",
     link: "https://instagram.com/prof.azlef/",
     text: "@prof.azlef",
-    description: "Community of 25,000+ followers",
+    description: "Personal Instagram account",
     isExternal: true
   }
 ];
@@ -137,12 +137,21 @@ const Contact = () => {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      console.log("Form data:", data);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('https://formspree.io/f/xvgkbbye', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Failed to send message');
+
       toast({
-        title: "Message sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
+        title: "Message Sent!",
+        description: "Thank you for reaching out! I'll respond within 24-48 hours.",
         variant: "default",
+        className: "bg-gold text-brown border border-gold/20",
       });
       setFormSubmitted(true);
       form.reset();
@@ -155,6 +164,7 @@ const Contact = () => {
         title: "Error sending message",
         description: "There was a problem sending your message. Please try again.",
         variant: "destructive",
+        className: "bg-red-500/90 text-white border border-red-400/20",
       });
     }
   };
@@ -312,62 +322,78 @@ const Contact = () => {
             </div>
             
             {/* Additional Contact Info */}
-            <div className="mt-8 bg-brown/90 p-6 rounded-xl border border-gold/10 backdrop-blur-sm shadow-lg">
-              <h3 className="font-balooBhaijaan text-xl text-gold mb-4">Contact Information</h3>
-              
-              <div className="space-y-5">
-                {socialLinks.map((item, index) => (
-                  <motion.div 
-                    key={index} 
-                    className="flex items-start gap-4 relative overflow-hidden group"
-                    onMouseEnter={() => setHoveredSocial(index)}
-                    onMouseLeave={() => setHoveredSocial(null)}
-                    whileHover={{ x: 5 }}
-                  >
-                    <div className="absolute inset-0 bg-gold/5 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out rounded-lg"></div>
-                    
-                    <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center shrink-0 z-10 group-hover:bg-gold/30 transition-colors">
-                      <i className={`${item.icon} text-gold text-lg`}></i>
+            <div className="mt-8 space-y-4">
+              {socialLinks.map((item, index) => (
+                <motion.div 
+                  key={index} 
+                  className="relative overflow-hidden group"
+                  onMouseEnter={() => setHoveredSocial(index)}
+                  onMouseLeave={() => setHoveredSocial(null)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  {item.link ? (
+                    <a 
+                      href={item.link}
+                      target={item.isExternal ? "_blank" : undefined}
+                      rel={item.isExternal ? "noopener noreferrer" : undefined}
+                      className="block"
+                    >
+                      <div className="bg-brown-dark/80 backdrop-blur-sm border border-gold/10 rounded-xl p-4 transition-all duration-300 
+                        hover:border-gold/30 hover:bg-brown-dark/90 group-hover:shadow-lg group-hover:shadow-gold/5">
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center shrink-0 
+                            group-hover:bg-gold/20 transition-colors">
+                            <i className={`${item.icon} text-gold text-xl`}></i>
+                          </div>
+                          
+                          <div className="flex-grow">
+                            <h4 className="font-balooBhaijaan text-lg text-gold mb-1">{item.title}</h4>
+                            <div className="text-beige group-hover:text-gold transition-colors inline-flex items-center gap-2">
+                              <span>{item.text}</span>
+                              <i className="fas fa-arrow-right text-xs opacity-0 -translate-x-2 transition-all duration-300 
+                                group-hover:opacity-100 group-hover:translate-x-0"></i>
+                            </div>
+                            {item.description && (
+                              <p className="text-sm text-beige-light/70 mt-1">{item.description}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  ) : (
+                    <div className="bg-brown-dark/80 backdrop-blur-sm border border-gold/10 rounded-xl p-4 transition-all duration-300 
+                      hover:border-gold/30 hover:bg-brown-dark/90 group-hover:shadow-lg group-hover:shadow-gold/5">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center shrink-0 
+                          group-hover:bg-gold/20 transition-colors">
+                          <i className={`${item.icon} text-gold text-xl`}></i>
+                        </div>
+                        
+                        <div className="flex-grow">
+                          <h4 className="font-balooBhaijaan text-lg text-gold mb-1">{item.title}</h4>
+                          <span className="text-beige">{item.text}</span>
+                          {item.description && (
+                            <p className="text-sm text-beige-light/70 mt-1">{item.description}</p>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    
-                    <div className="z-10">
-                      <h4 className="font-balooBhaijaan text-lg text-beige mb-1">{item.title}</h4>
-                      {item.link ? (
-                        <a 
-                          href={item.link} 
-                          className="text-gold hover:text-gold-light transition-colors block"
-                          target={item.isExternal ? "_blank" : undefined}
-                          rel={item.isExternal ? "noopener noreferrer" : undefined}
-                        >
-                          {item.text}
-                        </a>
-                      ) : (
-                        <span className="text-gold">{item.text}</span>
-                      )}
-                      {item.description && (
-                        <p className="text-sm text-beige-light/80 mt-1">{item.description}</p>
-                      )}
-                    </div>
-                    
-                    {hoveredSocial === index && item.link && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gold"
-                      >
-                        <i className="fas fa-arrow-right"></i>
-                      </motion.div>
-                    )}
-                  </motion.div>
-                ))}
-              </div>
-              
-              <div className="mt-6 bg-brown-dark/30 p-4 rounded-lg">
-                <p className="text-beige-light text-center italic">
+                  )}
+                </motion.div>
+              ))}
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="bg-gradient-to-r from-gold/20 to-gold/10 p-6 rounded-xl border border-gold/20 mt-6 text-center"
+              >
+                <p className="text-beige italic">
                   "I strive to respond to all messages within 24-48 hours. Looking forward to hearing from you!"
                 </p>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
           
@@ -385,22 +411,19 @@ const Contact = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-8 bg-gradient-to-r from-gold/20 to-gold/10 rounded-xl border border-gold/30 shadow-lg text-center"
+                  className="p-8 bg-gold/20 rounded-xl border border-gold/30 shadow-lg text-center"
                 >
-                  <div className="mb-6 w-20 h-20 bg-gold/20 rounded-full flex items-center justify-center mx-auto">
+                  <div className="mb-6 w-20 h-20 bg-gold/30 rounded-full flex items-center justify-center mx-auto">
                     <i className="fas fa-check text-gold text-3xl"></i>
                   </div>
                   <h4 className="text-gold text-2xl font-balooBhaijaan mb-3">Message Sent!</h4>
                   <p className="text-beige mb-6">
                     Thank you for reaching out! I'll respond to your message within 24-48 hours.
                   </p>
-                  <p className="text-beige-light/80 text-sm mb-4">
-                    This form will reset in a few seconds, or you can manually reset it now.
-                  </p>
                   <Button
                     type="button"
                     onClick={() => setFormSubmitted(false)}
-                    className="bg-gold/30 hover:bg-gold/40 text-gold hover:text-gold-light border border-gold/30 px-6 py-2 rounded-full transition-all hover:shadow-gold"
+                    className="bg-gold hover:bg-gold-light text-brown font-semibold px-6 py-2 rounded-full transition-all hover:shadow-gold"
                   >
                     Send Another Message
                   </Button>

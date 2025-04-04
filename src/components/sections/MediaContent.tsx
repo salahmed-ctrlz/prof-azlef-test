@@ -226,8 +226,8 @@ const MediaContent = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                       >
-                        Listen to educational content
-                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#1DB954]"></div>
+                        Listen
+                        <div className="absolute bottom-0 left-[-2] transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#1DB954]"></div>
                       </motion.div>
                     )}
                   </div>
@@ -314,7 +314,7 @@ const MediaContent = () => {
                 <div className="mt-5 flex flex-col sm:flex-row justify-between items-start sm:items-center">
                   <div>
                     <h4 className="text-gold font-balooBhaijaan">Featured Video</h4>
-                    <p className="text-beige-light text-sm">Interactive teaching techniques demonstration</p>
+                    <p className="text-beige-light text-sm">تجربتي مع المقابلة الشفوية بالمدرسة العليا للأساتذة - أسيا جبار قسنطينة -</p>
                   </div>
                   
                   <div className="relative mt-3 sm:mt-0">
@@ -342,8 +342,8 @@ const MediaContent = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                       >
-                        Watch educational videos
-                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#FF0000]"></div>
+                        Watch
+                        <div className="absolute bottom-0 left-[-2] transform -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-[#FF0000]"></div>
                       </motion.div>
                     )}
                   </div>
